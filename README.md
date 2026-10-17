@@ -83,6 +83,15 @@ Verification without execution is a fancy dashboard for idling.
 
 **Humans:** Review the code, suggest improvements, report hazards.
 
+### Tests
+
+The Python queue-sync scripts and their tests require Python 3 and PyYAML.
+Run the regression suite from the repository root:
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
 ## License
 
 MIT — use it, improve it, share it.

@@ -92,8 +92,13 @@ def sync_task_status(task):
             return True, f"Task {task_id}: BLOCKED (stuck, no artifact)"
         return False, f"Task {task_id}: No artifacts yet (still pending/in_progress)"
     
-    # Find most recent artifact
-    latest_artifact = max(artifacts, key=lambda p: parse_timestamp(p.split('_')[-1].replace('.yaml', '')) or datetime.min)
+    # Keep both date and time from the filename's YYYYMMDD_HHMMSS suffix.
+    # Task IDs, artifact types, and parent directories may contain underscores.
+    latest_artifact = max(
+        artifacts,
+        key=lambda p: parse_timestamp('_'.join(Path(p).stem.rsplit('_', 2)[-2:]))
+        or datetime.min,
+    )
     
     # Verify integrity
     valid, reason = verify_artifact_integrity(latest_artifact)
